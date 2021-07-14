@@ -1,3 +1,7 @@
+說明：
+說明這個Repository是數位教室監控的pc端主程式專案
+
+環境：
 # Kneron Computer Lab
 
 This project contains python examples for Kneron Computer Lab Book
@@ -141,3 +145,4 @@ DME configure model [1000] succeeded...
 272 0.057467412876039244
 de init kdp host lib....
 ```
+
