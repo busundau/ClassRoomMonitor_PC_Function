@@ -51,16 +51,19 @@ def display_image(inf_res, r_size, frames):
         box_result = ctypes.cast(
             ctypes.byref(header_result.boxes),
             ctypes.POINTER(constants.BoundingBox * header_result.box_count)).contents
+        i=0
         for box in box_result:
             x1 = int(box.x1)
             y1 = int(box.y1)
             x2 = int(box.x2)
             y2 = int(box.y2)
-            frames[0] = cv2.rectangle(frames[0], (x1, y1), (x2, y2), (0, 0, 255), 3)
             class_number = int(box.class_num)
             class_labels = labels[class_number]
-            cv2.putText(frames[0],class_labels,(x1,y1), font, 1, (255, 255, 255), 2, cv2.LINE_AA)
-
+            if(class_labels == 'person'):#標籤等於人才印
+                frames[0] = cv2.rectangle(frames[0], (x1, y1), (x2, y2), (0, 0, 255), 3)
+                cv2.putText(frames[0],class_labels,(x1,y1), font, 1, (255, 255, 255), 2, cv2.LINE_AA)
+                i =i+1
+        cv2.putText(frames[0], 'online:'+str(i), (10, 30), cv2.FONT_HERSHEY_COMPLEX,1, (0, 255, 255), 1, cv2.LINE_AA)#印在線人數
         cv2.imshow('detection', frames[0])
         del frames[0]
 
