@@ -10,6 +10,8 @@ import numpy as np
 from common import constants
 from python_wrapper import kdp_wrapper
 import kdp_host_api as api
+import requests
+import json
 
 # Read class labels
 labels_file = 'python_wrapper/coco.names'
@@ -64,7 +66,13 @@ def display_image(inf_res, r_size, frames):
                 cv2.putText(frames[0],class_labels,(x1,y1), font, 1, (255, 255, 255), 2, cv2.LINE_AA)
                 i =i+1
         cv2.putText(frames[0], 'online:'+str(i), (10, 30), cv2.FONT_HERSHEY_COMPLEX,1, (0, 255, 255), 1, cv2.LINE_AA)#印在線人數
+        headers = {'Content-Type': 'application/json'}
+        data = {'classname': 'class1',
+                'onlinepeople': str(i),
+                'offlinepeople': str(20-i),
+                'classtotalpeople': '20'}
         cv2.imshow('detection', frames[0])
+        response = requests.post(url='http://192.168.100.112:80/cgi-bin/cgi_PcWriteToSQL.py', headers=headers, data=json.dumps(data))#這邊加入計數人數並傳到SQL,透過cgi程式去寫資料庫
         del frames[0]
 
     return 0
